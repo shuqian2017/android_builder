@@ -24,9 +24,14 @@ jobs:
           if [ ! -f "gradlew" ]; then gradle wrapper; fi
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
+          mkdir -p ${{ github.workspace }}/apk/
+          for file in `find ~ -name "*.apk" -print`; do
+            mv "$file" ${{ github.workspace }}/apk/
+          done
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
           name: my-build-apk
-          path: ./**/*.apk
+          #path: ./**/*.apk
+          path: ${{ github.workspace }}/apk/*
 
